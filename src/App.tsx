@@ -1,11 +1,23 @@
-import Login from "./Auth/Login";
 import NotFound from "./NotFound";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import AppRoutes from "./AppRoutes";
+import store from "./redux/store";
 
 function App() {
   return (
     <>
       <div className="hidden lg:block">
-        <Login />
+        <Provider store={store}>
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/*"
+                element={<AppRoutes />}
+              />
+            </Routes>
+          </BrowserRouter>
+        </Provider>
       </div>
       <div className="lg:hidden">
         <NotFound />

@@ -30,11 +30,7 @@ export const Main = () => {
     }
   }, [isDesktop]);
 
-  return (
-    <div>
-      <App />
-    </div>
-  );
+  return <App />;
 };
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
