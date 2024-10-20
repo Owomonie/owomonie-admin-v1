@@ -21,6 +21,8 @@ const AppRoutes: React.FC = () => {
           },
         })
       );
+    } else {
+      navigate("/login");
     }
   }, [dispatch, navigate]);
 
