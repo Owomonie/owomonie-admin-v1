@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError, AxiosJSON } from "../axios";
 import { getUserDetails } from "./get-user-details";
-import { ExtraArgs } from "../../types";
+import { ExtraArgs } from "../../utils/types";
 
 interface LoginError {
   message: string;
@@ -24,12 +24,16 @@ export const loginUser = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     try {
+      const { navigate } = extra;
+
       dispatch(loginRequest());
 
       const { data } = await axios.post("login", {
         email,
         password,
       });
+
+      if (!data.isAdmin) return;
 
       localStorage.setItem("authToken", data?.token);
 
@@ -41,6 +45,8 @@ export const loginUser = createAsyncThunk(
       );
 
       dispatch(loginComplete());
+
+      navigate("/");
     } catch (error) {
       console.log("Login Error", error);
       let errorMessage = "Network Error";

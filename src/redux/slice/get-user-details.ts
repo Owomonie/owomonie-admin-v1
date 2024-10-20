@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError, AxiosJSON } from "../axios";
-import { ExtraArgs } from "../../types";
+import { ExtraArgs } from "../../utils/types";
 
 interface GetUserDetailsError {
   message: string;
@@ -31,7 +31,6 @@ export const getUserDetails = createAsyncThunk(
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       const { data } = await axios.get("get-user-details");
-      console.log(data);
 
       dispatch(getUserDetailsSuccess(data.user));
     } catch (error) {
