@@ -10,6 +10,7 @@ import Sidebar from "./components/Sidebar";
 import Spinner from "./components/Spinner";
 import UserManagement from "./containers/UserManagement";
 import Notifications from "./containers/Notifications";
+import NewNotification from "./containers/Notifications/NewNotification";
 
 const AppRoutes: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -54,6 +55,10 @@ const AppRoutes: React.FC = () => {
           <Route
             path="/notifications"
             element={<Notifications />}
+          />
+          <Route
+            path="/notifications/new"
+            element={<NewNotification />}
           />
           <Route
             path="/login"
