@@ -8,10 +8,14 @@ import { useSelector } from "react-redux";
 import { UserDetails } from "./utils/types";
 import Navbar from "./Components/Navbar";
 import Sidebar from "./Components/Sidebar";
+import Spinner from "./Components/Spinner";
 
 const AppRoutes: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const loading1 = useSelector((state: RootState) => state.userDetails.loading);
+  const loading2 = useSelector((state: RootState) => state.login.loading);
 
   const user = useSelector(
     (state: RootState) => state.userDetails.data as UserDetails
@@ -37,6 +41,7 @@ const AppRoutes: React.FC = () => {
 
   return (
     <>
+      {(loading1 || loading2) && <Spinner />}
       {userID && <Sidebar />}
       <div className={`ml-[250px]`}>
         {userID && <Navbar />}
