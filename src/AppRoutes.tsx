@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Dashboard from "./Containers/Dashboard";
-import Login from "./Auth/Login";
+import Login from "./auth/Login";
 import { RootState, useAppDispatch } from "./redux/store";
 import { getUserDetails } from "./redux/slice/get-user-details";
 import { useSelector } from "react-redux";
 import { UserDetails } from "./utils/types";
-import Navbar from "./Components/Navbar";
-import Sidebar from "./Components/Sidebar";
-import Spinner from "./Components/Spinner";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import Spinner from "./components/Spinner";
+import UserManagement from "./containers/UserManagement";
+import Notifications from "./containers/Notifications";
 
 const AppRoutes: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -48,7 +49,11 @@ const AppRoutes: React.FC = () => {
         <Routes>
           <Route
             path="/"
-            element={<Dashboard />}
+            element={<UserManagement />}
+          />
+          <Route
+            path="/notifications"
+            element={<Notifications />}
           />
           <Route
             path="/login"
