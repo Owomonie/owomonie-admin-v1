@@ -24,6 +24,7 @@ const AppRoutes: React.FC = () => {
   );
 
   const userID = user._id;
+  console.log();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
