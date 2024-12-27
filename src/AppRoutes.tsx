@@ -2,13 +2,22 @@ import React, { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Dashboard from "./Containers/Dashboard";
 import Login from "./Auth/Login";
-import { useAppDispatch } from "./redux/store";
+import { RootState, useAppDispatch } from "./redux/store";
 import { getUserDetails } from "./redux/slice/get-user-details";
+import { useSelector } from "react-redux";
+import { UserDetails } from "./utils/types";
+import Navbar from "./Components/Navbar";
+import Sidebar from "./Components/Sidebar";
 
 const AppRoutes: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  //   const location = useLocation();
+
+  const user = useSelector(
+    (state: RootState) => state.userDetails.data as UserDetails
+  );
+
+  const userID = user._id;
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -26,22 +35,22 @@ const AppRoutes: React.FC = () => {
     }
   }, [dispatch, navigate]);
 
-  //   const isLoginPage = location.pathname === "/login";
-
   return (
     <>
-      {/* !isLoginPage &&  /* Sidebar * Navbar  */}
-
-      <Routes>
-        <Route
-          path="/"
-          element={<Dashboard />}
-        />
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-      </Routes>
+      {userID && <Sidebar />}
+      <div className={`ml-[250px]`}>
+        {userID && <Navbar />}
+        <Routes>
+          <Route
+            path="/"
+            element={<Dashboard />}
+          />
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+        </Routes>
+      </div>
     </>
   );
 };

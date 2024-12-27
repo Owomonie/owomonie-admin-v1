@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Aspekta";
+  src: url("./assets/fonts/Aspekta/Aspekta-350.ttf") format("truetype");
+  font-weight: 350;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Aspekta";
+  src: url("./assets/fonts/Aspekta/Aspekta-450.ttf") format("truetype");
+  font-weight: 450;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Aspekta";
+  src: url("./assets/fonts/Aspekta/Aspekta-550.ttf") format("truetype");
+  font-weight: 550;
+  font-style: normal;
+}
+
+* {
+  font-family: "Aspekta", sans-serif;
+}
