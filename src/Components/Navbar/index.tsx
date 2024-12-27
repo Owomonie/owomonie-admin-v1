@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
           {user.firstName} {user.lastName}
         </p>
         <small className="font-[350] text-[#5F5F5F] text-[12px]">
-          SUPER ADMIN
+          SUPER ADMIN!
         </small>
       </div>
       <RightNavbar />
