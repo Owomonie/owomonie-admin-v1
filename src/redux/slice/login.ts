@@ -37,22 +37,23 @@ export const loginUser = createAsyncThunk(
       if (!data.isAdmin) {
         toast.error("Unauthorized");
         navigate("/login");
+        return;
+      } else {
+        localStorage.setItem("authToken", data?.token);
+
+        await dispatch(
+          getUserDetails({
+            token: data?.token,
+            extra,
+          })
+        );
+
+        dispatch(loginComplete());
+
+        toast.success(data?.message);
+
+        navigate("/");
       }
-
-      localStorage.setItem("authToken", data?.token);
-
-      await dispatch(
-        getUserDetails({
-          token: data?.token,
-          extra,
-        })
-      );
-
-      dispatch(loginComplete());
-
-      toast.success(data?.message);
-
-      navigate("/");
     } catch (error) {
       console.log("Login Error", error);
       let errorMessage = "Network Error";
