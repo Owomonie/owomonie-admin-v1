@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Login from "./auth/Login";
 import { RootState, useAppDispatch } from "./redux/store";
 import { getUserDetails } from "./redux/slice/get-user-details";
-import { useSelector } from "react-redux";
 import { UserDetails } from "./utils/types";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
@@ -43,6 +46,12 @@ const AppRoutes: React.FC = () => {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar
+      />
+
       {(loading1 || loading2) && <Spinner />}
       {userID && <Sidebar />}
       <div className={`ml-[250px]`}>

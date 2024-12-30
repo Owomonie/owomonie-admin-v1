@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError, AxiosJSON } from "../axios";
 import { getUserDetails } from "./get-user-details";
 import { ExtraArgs } from "../../utils/types";
+import { toast } from "react-toastify";
 
 interface LoginError {
   message: string;
@@ -33,7 +34,10 @@ export const loginUser = createAsyncThunk(
         password,
       });
 
-      if (!data.isAdmin) return;
+      if (!data.isAdmin) {
+        toast.error("Unauthorized");
+        navigate("/login");
+      }
 
       localStorage.setItem("authToken", data?.token);
 
@@ -46,6 +50,8 @@ export const loginUser = createAsyncThunk(
 
       dispatch(loginComplete());
 
+      toast.success(data?.message);
+
       navigate("/");
     } catch (error) {
       console.log("Login Error", error);
@@ -57,6 +63,8 @@ export const loginUser = createAsyncThunk(
       }
 
       dispatch(loginComplete());
+
+      toast.error(errorMessage);
 
       return rejectWithValue({ message: errorMessage });
     }

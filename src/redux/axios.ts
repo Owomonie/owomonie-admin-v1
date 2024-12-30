@@ -1,6 +1,6 @@
 import Axios, { AxiosError } from "axios";
 
-const baseURL = "https://owomonie-backend-v1.onrender.com/";
+const baseURL = import.meta.env.VITE_API_URL;
 
 export { AxiosError };
 

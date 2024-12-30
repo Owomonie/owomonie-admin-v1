@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { useAppDispatch } from "../redux/store";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+
+import { useAppDispatch } from "../redux/store";
 import { loginUser } from "../redux/slice/login";
 
 const Login: React.FC = () => {
@@ -12,7 +14,9 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && password) {
+    if (!email || !password) {
+      toast.error("Incomplete Login Details");
+    } else if (email && password) {
       dispatch(
         loginUser({
           email,
