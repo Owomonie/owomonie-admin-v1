@@ -13,7 +13,11 @@ const UserManagement = () => {
     (state: RootState) => state.allUsers.data as Users[]
   );
 
-  const filteredUsers = users.filter((user) => {
+  const sortedUsers = [...users].sort((a, b) =>
+    a.userName.localeCompare(b.userName)
+  );
+
+  const filteredUsers = sortedUsers.filter((user) => {
     const matchesStatus =
       selectedFilterStatus === "all" ||
       (selectedFilterStatus === "active" && user.status === 1) ||

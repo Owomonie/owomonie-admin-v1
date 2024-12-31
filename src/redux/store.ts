@@ -5,12 +5,14 @@ import { useDispatch } from "react-redux";
 import loginSlice from "./slice/login";
 import getUserDetailsSlice from "./slice/get-user-details";
 import getAllUsersSlice from "./slice/get-all-users";
+import updateUserSlice from "./slice/update-user";
 
 const rootReducer = combineReducers({
   // forgetPassword: forgetPasswordSlice.reducer,
   login: loginSlice.reducer,
   userDetails: getUserDetailsSlice.reducer,
   allUsers: getAllUsersSlice.reducer,
+  updateUser: updateUserSlice.reducer,
 });
 
 const store = configureStore({

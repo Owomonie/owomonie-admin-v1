@@ -50,7 +50,7 @@ const UserManagementHeader: React.FC<UserManagementHeaderProps> = ({
           type="text"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Search Users"
+          placeholder="Search Users by Email, Username, Firstname and Lastname"
           className="w-full border border-[#D3D3D3] font-[350] text-[15px] py-2 px-4 rounded-3xl"
         />
         <img
