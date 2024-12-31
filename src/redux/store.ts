@@ -4,11 +4,13 @@ import { useDispatch } from "react-redux";
 // import forgetPasswordSlice from "./slice/forgot-passord";
 import loginSlice from "./slice/login";
 import getUserDetailsSlice from "./slice/get-user-details";
+import getAllUsersSlice from "./slice/get-all-users";
 
 const rootReducer = combineReducers({
   // forgetPassword: forgetPasswordSlice.reducer,
   login: loginSlice.reducer,
   userDetails: getUserDetailsSlice.reducer,
+  allUsers: getAllUsersSlice.reducer,
 });
 
 const store = configureStore({

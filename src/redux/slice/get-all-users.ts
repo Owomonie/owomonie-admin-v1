@@ -2,19 +2,19 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError, AxiosJSON } from "../axios";
 import { ExtraArgs } from "../../utils/types";
 
-interface GetUserDetailsError {
+interface GetAllUsersError {
   message: string;
 }
 
-interface GetUserDetailsState {
+interface GetAllUsersState {
   loading: boolean;
   data: object;
 }
 
 const axios = AxiosJSON();
 
-export const getUserDetails = createAsyncThunk(
-  "auth/getUserDetailsAsync",
+export const getAllUsers = createAsyncThunk(
+  "auth/getAllUsersAsync",
   async (
     { token, extra }: { token: string; extra: ExtraArgs },
     { dispatch, rejectWithValue }
@@ -22,23 +22,24 @@ export const getUserDetails = createAsyncThunk(
     const { navigate } = extra;
 
     try {
-      dispatch(getUserDetailsRequest());
+      dispatch(getAllUsersRequest());
 
       if (!token) {
-        dispatch(getUserDetailsComplete());
+        dispatch(getAllUsersComplete());
         navigate("/login");
       }
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      const { data } = await axios.get("get-user-details");
+      const { data } = await axios.get("get-all-users");
+      console.log(data.users);
 
-      dispatch(getUserDetailsSuccess(data.user));
+      dispatch(getAllUsersSuccess(data.users));
     } catch (error) {
-      console.log("getUserDetails Error", error);
+      console.log("getAllUsers Error", error);
       let errorMessage = "Network Error";
 
-      const axiosError = error as AxiosError<GetUserDetailsError>;
+      const axiosError = error as AxiosError<GetAllUsersError>;
       if (axiosError.response) {
         if (axiosError.response.status === 403) {
           // Handle 403 Forbidden error
@@ -50,7 +51,8 @@ export const getUserDetails = createAsyncThunk(
         }
       }
 
-      dispatch(getUserDetailsComplete());
+      dispatch(getAllUsersComplete());
+
       navigate("/login");
 
       return rejectWithValue({ message: errorMessage });
@@ -58,34 +60,31 @@ export const getUserDetails = createAsyncThunk(
   }
 );
 
-const initialState: GetUserDetailsState = {
+const initialState: GetAllUsersState = {
   loading: false,
   data: [],
 };
 
-const getUserDetailsSlice = createSlice({
-  name: "getUserDetails",
+const getAllUsersSlice = createSlice({
+  name: "getAllUsers",
   initialState,
   reducers: {
-    getUserDetailsRequest: (state) => {
+    getAllUsersRequest: (state) => {
       state.loading = true;
     },
 
-    getUserDetailsSuccess: (state, action) => {
+    getAllUsersSuccess: (state, action) => {
       state.loading = false;
       state.data = action.payload;
     },
 
-    getUserDetailsComplete: (state) => {
+    getAllUsersComplete: (state) => {
       state.loading = false;
     },
   },
 });
 
-export const {
-  getUserDetailsComplete,
-  getUserDetailsRequest,
-  getUserDetailsSuccess,
-} = getUserDetailsSlice.actions;
+export const { getAllUsersComplete, getAllUsersRequest, getAllUsersSuccess } =
+  getAllUsersSlice.actions;
 
-export default getUserDetailsSlice;
+export default getAllUsersSlice;

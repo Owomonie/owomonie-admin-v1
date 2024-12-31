@@ -3,6 +3,7 @@ import { AxiosError, AxiosJSON } from "../axios";
 import { getUserDetails } from "./get-user-details";
 import { ExtraArgs } from "../../utils/types";
 import { toast } from "react-toastify";
+import { getAllUsers } from "./get-all-users";
 
 interface LoginError {
   message: string;
@@ -44,6 +45,13 @@ export const loginUser = createAsyncThunk(
 
         await dispatch(
           getUserDetails({
+            token: data?.token,
+            extra,
+          })
+        );
+
+        await dispatch(
+          getAllUsers({
             token: data?.token,
             extra,
           })

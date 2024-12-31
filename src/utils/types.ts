@@ -24,3 +24,21 @@ export interface UserDetails {
   userName: string;
   workType: string;
 }
+
+export enum UserStatus {
+  Active = 1,
+  Suspended = -1,
+}
+
+export interface User {
+  id: string;
+  email: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  gender: "Male" | "Female" | "Other";
+  avatar: string;
+  status: UserStatus;
+  lastLogin: string;
+  registeredDate: string;
+}

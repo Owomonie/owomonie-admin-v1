@@ -14,6 +14,7 @@ import Spinner from "./components/Spinner";
 import UserManagement from "./containers/UserManagement";
 import Notifications from "./containers/Notifications";
 import NewNotification from "./containers/Notifications/NewNotification";
+import { getAllUsers } from "./redux/slice/get-all-users";
 
 const AppRoutes: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -29,19 +30,31 @@ const AppRoutes: React.FC = () => {
   const userID = user._id;
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      dispatch(
-        getUserDetails({
-          token,
-          extra: {
-            navigate,
-          },
-        })
-      );
-    } else {
-      navigate("/login");
-    }
+    const fetchDetails = async () => {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        await dispatch(
+          getUserDetails({
+            token,
+            extra: {
+              navigate,
+            },
+          })
+        );
+        await dispatch(
+          getAllUsers({
+            token,
+            extra: {
+              navigate,
+            },
+          })
+        );
+      } else {
+        navigate("/login");
+      }
+    };
+
+    fetchDetails();
   }, [dispatch, navigate]);
 
   return (
