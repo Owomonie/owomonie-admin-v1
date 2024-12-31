@@ -32,7 +32,6 @@ export const getAllUsers = createAsyncThunk(
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       const { data } = await axios.get("get-all-users");
-      console.log(data.users);
 
       dispatch(getAllUsersSuccess(data.users));
     } catch (error) {

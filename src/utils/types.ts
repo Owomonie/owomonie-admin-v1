@@ -30,7 +30,7 @@ export enum UserStatus {
   Suspended = -1,
 }
 
-export interface User {
+export interface Users {
   id: string;
   email: string;
   userName: string;
