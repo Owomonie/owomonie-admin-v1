@@ -36,8 +36,9 @@ export const loginUser = createAsyncThunk(
 
       if (!data.isAdmin) {
         toast.error("Unauthorized");
+        dispatch(loginComplete());
         navigate("/login");
-        return;
+        return rejectWithValue({ message: "Unauthorized access" });
       } else {
         localStorage.setItem("authToken", data?.token);
 
