@@ -4,8 +4,8 @@ import { AvatarList } from "../../utils/avatars";
 import { UserDetails } from "../../utils/types";
 import { RootState } from "../../redux/store";
 
-const searchIcon = new URL("../../assets/navicons/search.png", import.meta.url)
-  .href;
+// const searchIcon = new URL("../../assets/navicons/search.png", import.meta.url)
+//   .href;
 const settingsIcon = new URL(
   "../../assets/navicons/settings.png",
   import.meta.url
@@ -25,7 +25,7 @@ const RightNavbar: React.FC = () => {
 
   return (
     <div className="flex gap-4">
-      <div className="w-[300px] relative">
+      {/* <div className="w-[300px] relative">
         <input
           type="text"
           placeholder="Search"
@@ -36,7 +36,7 @@ const RightNavbar: React.FC = () => {
           alt="Search"
           className="w-5 h-5 absolute top-2 right-2"
         />
-      </div>
+      </div> */}
 
       <NavLink to={"/settings"}>
         <img
