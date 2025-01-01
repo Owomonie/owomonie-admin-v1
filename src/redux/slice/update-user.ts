@@ -45,7 +45,6 @@ export const updateUserStatus = createAsyncThunk(
       }
 
       dispatch(updateUserComplete());
-      console.log(data);
 
       toast.success(data?.message);
     } catch (error) {

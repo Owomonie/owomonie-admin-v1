@@ -23,6 +23,9 @@ const AppRoutes: React.FC = () => {
   const loading1 = useSelector((state: RootState) => state.userDetails.loading);
   const loading2 = useSelector((state: RootState) => state.login.loading);
   const loading3 = useSelector((state: RootState) => state.updateUser.loading);
+  const loading4 = useSelector(
+    (state: RootState) => state.notification.loading
+  );
 
   const user = useSelector(
     (state: RootState) => state.userDetails.data as UserDetails
@@ -66,7 +69,7 @@ const AppRoutes: React.FC = () => {
         hideProgressBar
       />
 
-      {(loading1 || loading2 || loading3) && <Spinner />}
+      {(loading1 || loading2 || loading3 || loading4) && <Spinner />}
       {userID && <Sidebar />}
       <div className={`ml-[250px]`}>
         {userID && <Navbar />}

@@ -59,9 +59,9 @@ export const loginUser = createAsyncThunk(
 
         dispatch(loginComplete());
 
-        toast.success(data?.message);
-
         navigate("/");
+
+        toast.success(data?.message);
       }
     } catch (error) {
       console.log("Login Error", error);

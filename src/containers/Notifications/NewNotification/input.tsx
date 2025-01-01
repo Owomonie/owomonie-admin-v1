@@ -42,7 +42,7 @@ const NewNotificationInputs = ({
         <label
           htmlFor="title"
           className="font-[350] text-xs text-[#5F5F5F]">
-          SUBJECT
+          SUBJECT <small className="text-red-600 font-bold ml-3">*</small>
         </label>
         <input
           type="text"
@@ -59,7 +59,7 @@ const NewNotificationInputs = ({
         <label
           htmlFor="message"
           className="font-[350] text-xs text-[#5F5F5F]">
-          MESSAGE
+          MESSAGE <small className="text-red-600 font-bold ml-3">*</small>
         </label>
         <input
           type="text"
@@ -76,7 +76,7 @@ const NewNotificationInputs = ({
         <label
           htmlFor="recipients"
           className="font-[350] text-xs text-[#5F5F5F]">
-          RECIPIENTS
+          RECIPIENTS <small className="text-red-600 font-bold ml-3">*</small>
         </label>
         <select
           id="recipients"
@@ -106,7 +106,7 @@ const NewNotificationInputs = ({
           <label
             htmlFor="user"
             className="font-[350] text-xs text-[#5F5F5F]">
-            USERS
+            USERS <small className="text-red-600 font-bold ml-3">*</small>
           </label>
           <select
             id="user"
@@ -123,7 +123,7 @@ const NewNotificationInputs = ({
               <option
                 key={user.id}
                 value={user.id}>
-                {user.email}
+                {user.email} [Username: {user.userName}]
               </option>
             ))}
           </select>
@@ -140,7 +140,7 @@ const NewNotificationInputs = ({
         <label
           htmlFor="type"
           className="font-[350] text-xs text-[#5F5F5F]">
-          TYPE
+          TYPE <small className="text-red-600 font-bold ml-3">*</small>
         </label>
         <select
           id="type"
@@ -154,8 +154,12 @@ const NewNotificationInputs = ({
             Select Type
           </option>
           <option value="0">Push Notification Only</option>
-          <option value="1">Email Only</option>
-          <option value="2">Both Push Notification and Email</option>
+          {formState.recipients !== "all" && (
+            <>
+              <option value="1">Email Only</option>
+              <option value="2">Both Push Notification and Email</option>
+            </>
+          )}
         </select>
         <RiArrowDropDownLine
           color="#898989"

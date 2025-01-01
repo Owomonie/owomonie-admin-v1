@@ -28,7 +28,7 @@ const NewNotificationCategory = ({
 
   return (
     <div>
-      <div className="flex flex-col gap-1 relative">
+      <div className="flex flex-col gap-1 relative border-b border-[#EAEAEA] pb-5">
         <label
           htmlFor="category"
           className="font-[350] text-xs text-[#5F5F5F]">
