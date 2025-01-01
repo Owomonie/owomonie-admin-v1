@@ -12,6 +12,9 @@ const NewNotification: React.FC = () => {
     type: "",
   });
   const [categories, setCategories] = useState<string[]>([]);
+  const [userSelectedID, setUserSelectedID] = useState("");
+
+  console.log(userSelectedID);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -35,6 +38,8 @@ const NewNotification: React.FC = () => {
         <NewNotificationInputs
           formState={formState}
           handleInputChange={handleInputChange}
+          userSelectedID={userSelectedID}
+          setUserSelectedID={setUserSelectedID}
         />
         <NewNotificationCategory
           categories={categories}

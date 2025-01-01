@@ -1,17 +1,40 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
+
 import { NotificationFormState } from "../interface";
+import { RootState } from "../../../redux/store";
+import { Users } from "../../../utils/types";
 
 interface NewNotificationInputsProps {
   formState: NotificationFormState;
   handleInputChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
+  userSelectedID: string;
+  setUserSelectedID: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const NewNotificationInputs = ({
   formState,
   handleInputChange,
+  userSelectedID,
+  setUserSelectedID,
 }: NewNotificationInputsProps) => {
+  const users = useSelector(
+    (state: RootState) => state.allUsers.data as Users[]
+  );
+
+  const sortedUsers = [...users].sort((a, b) => a.email.localeCompare(b.email));
+
+  const handleRecipientChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    handleInputChange(event);
+    if (formState.recipients !== "one") {
+      setUserSelectedID("");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-5 mb-5">
       {/* Title Input */}
@@ -59,7 +82,7 @@ const NewNotificationInputs = ({
           id="recipients"
           name="recipients"
           value={formState.recipients}
-          onChange={handleInputChange}
+          onChange={handleRecipientChange}
           className="appearance-none rounded-md py-2 pl-4 pr-8 bg-[#EAEAEA] text-[#0F0F0F] font-[350] text-[15px] border border-[#D3D3D3] focus:outline-none">
           <option
             value=""
@@ -68,7 +91,7 @@ const NewNotificationInputs = ({
           </option>
           <option value="all">All Users</option>
           <option value="users">Registered Users</option>
-          <option value="0">One User</option>
+          <option value="one">One User</option>
         </select>
         <RiArrowDropDownLine
           color="#898989"
@@ -76,6 +99,41 @@ const NewNotificationInputs = ({
           className="absolute top-8 right-1"
         />
       </div>
+
+      {/* Show User Select only if 'One User' is selected */}
+      {formState.recipients === "one" && (
+        <div className="flex flex-col gap-2 relative">
+          <label
+            htmlFor="user"
+            className="font-[350] text-xs text-[#5F5F5F]">
+            USERS
+          </label>
+          <select
+            id="user"
+            name="user"
+            value={userSelectedID}
+            onChange={(e) => setUserSelectedID(e.target.value)}
+            className="appearance-none rounded-md py-2 pl-4 pr-8 bg-[#EAEAEA] text-[#0F0F0F] font-[350] text-[15px] border border-[#D3D3D3] focus:outline-none">
+            <option
+              value=""
+              className="text-[#7A808D]">
+              Select User
+            </option>
+            {sortedUsers.map((user) => (
+              <option
+                key={user.id}
+                value={user.id}>
+                {user.email}
+              </option>
+            ))}
+          </select>
+          <RiArrowDropDownLine
+            color="#898989"
+            size={24}
+            className="absolute top-8 right-1"
+          />
+        </div>
+      )}
 
       {/* Type Select */}
       <div className="flex flex-col gap-2 relative">
