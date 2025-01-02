@@ -4,6 +4,10 @@ import { Provider } from "react-redux";
 import AppRoutes from "./AppRoutes";
 import store from "./redux/store";
 
+if (process.env.NODE_ENV === "production") {
+  console.log = function () {};
+}
+
 function App() {
   return (
     <>
