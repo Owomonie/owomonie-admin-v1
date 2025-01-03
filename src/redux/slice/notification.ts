@@ -55,13 +55,69 @@ export const sendNotification = createAsyncThunk(
         recipient,
       });
 
+      if (status === 0) {
+        await dispatch(getDraftNotifications());
+      } else {
+        await dispatch(getSentNotifications());
+      }
+
       dispatch(notificationComplete());
 
-      navigate("/notifications");
+      if (status === 0) {
+        navigate("/notifications/saved-drafts");
+      } else {
+        navigate("/notifications/sent");
+      }
 
       toast.success(data?.message);
     } catch (error) {
       console.log("Send Notification", error);
+      let errorMessage = "Network Error";
+
+      const axiosError = error as AxiosError<NotificationError>;
+      if (axiosError.response && axiosError.response.data) {
+        errorMessage = axiosError.response.data.message;
+      }
+
+      dispatch(notificationComplete());
+
+      toast.error(errorMessage);
+
+      return rejectWithValue({ message: errorMessage });
+    }
+  }
+);
+
+export const sendDraftNotification = createAsyncThunk(
+  "auth/notificationStatusAsync",
+  async (
+    {
+      notificationId,
+    }: {
+      notificationId: string;
+    },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      dispatch(notificationRequest());
+
+      const token = localStorage.getItem("authToken");
+
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      const { data } = await axios.patch(
+        `notification/draft-to-send/${notificationId}`
+      );
+
+      await dispatch(getDraftNotifications());
+
+      await dispatch(getSentNotifications());
+
+      dispatch(notificationComplete());
+
+      toast.success(data?.message);
+    } catch (error) {
+      console.log("Send Draft Notification", error);
       let errorMessage = "Network Error";
 
       const axiosError = error as AxiosError<NotificationError>;

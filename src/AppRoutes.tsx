@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Login from "./auth/Login";
 import { RootState, useAppDispatch } from "./redux/store";
+import { getAllUsers } from "./redux/slice/get-all-users";
 import { getUserDetails } from "./redux/slice/get-user-details";
 import { UserDetails } from "./utils/types";
 import Navbar from "./components/Navbar";
@@ -14,7 +15,8 @@ import Spinner from "./components/Spinner";
 import UserManagement from "./containers/UserManagement";
 import Notifications from "./containers/Notifications";
 import NewNotification from "./containers/Notifications/NewNotification";
-import { getAllUsers } from "./redux/slice/get-all-users";
+import DraftNotifications from "./containers/Notifications/DraftNotifications";
+import SentNotifications from "./containers/Notifications/SentNotifications";
 
 const AppRoutes: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -85,6 +87,14 @@ const AppRoutes: React.FC = () => {
           <Route
             path="/notifications/new"
             element={<NewNotification />}
+          />
+          <Route
+            path="/notifications/saved-drafts"
+            element={<DraftNotifications />}
+          />
+          <Route
+            path="/notifications/sent"
+            element={<SentNotifications />}
           />
           <Route
             path="/login"
