@@ -73,8 +73,8 @@ const AppRoutes: React.FC = () => {
 
       {(loading1 || loading2 || loading3 || loading4) && <Spinner />}
       {userID && <Sidebar />}
-      <div className={`ml-[250px]`}>
-        {userID && <Navbar />}
+      {userID && <Navbar />}
+      <div className={`ml-[250px] mt-[80px]`}>
         <Routes>
           <Route
             path="/"
