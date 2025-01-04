@@ -144,7 +144,7 @@ const UsersList: React.FC<UsersListProps> = ({
           </table>
 
           {showModal && selectedUser && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-40">
               <div className="bg-white p-6 rounded-lg shadow-lg">
                 <h2 className="text-lg font-bold text-center">
                   {selectedUser.status === 1 ? "Activate User" : "Suspend User"}
