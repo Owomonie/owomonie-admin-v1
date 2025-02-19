@@ -33,7 +33,7 @@ export const getUserDetails = createAsyncThunk(
 
       const { data } = await axios.get("get-user-details");
 
-      dispatch(getUserDetailsSuccess(data.user));
+      dispatch(getUserDetailsSuccess(data.data));
     } catch (error) {
       console.log("getUserDetails Error", error);
       let errorMessage = "Network Error";

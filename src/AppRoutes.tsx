@@ -33,8 +33,6 @@ const AppRoutes: React.FC = () => {
     (state: RootState) => state.userDetails.data as UserDetails
   );
 
-  const userID = user._id;
-
   useEffect(() => {
     const fetchDetails = async () => {
       const token = localStorage.getItem("authToken");
@@ -72,8 +70,8 @@ const AppRoutes: React.FC = () => {
       />
 
       {(loading1 || loading2 || loading3 || loading4) && <Spinner />}
-      {userID && <Sidebar />}
-      {userID && <Navbar />}
+      {user?.id && <Sidebar />}
+      {user?.id && <Navbar />}
       <div className={`ml-[250px] mt-[80px]`}>
         <Routes>
           <Route

@@ -11,7 +11,7 @@ export type FileDoc = {
 };
 
 export interface UserDetails {
-  _id: string;
+  id: string;
   ageRange: string;
   avatar: string;
   createdAt: string;
