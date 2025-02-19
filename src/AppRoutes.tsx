@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -8,7 +8,6 @@ import Login from "./auth/Login";
 import { RootState, useAppDispatch } from "./redux/store";
 import { getAllUsers } from "./redux/slice/get-all-users";
 import { getUserDetails } from "./redux/slice/get-user-details";
-import { UserDetails } from "./utils/types";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Spinner from "./components/Spinner";
@@ -21,16 +20,13 @@ import SentNotifications from "./containers/Notifications/SentNotifications";
 const AppRoutes: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const loading1 = useSelector((state: RootState) => state.userDetails.loading);
   const loading2 = useSelector((state: RootState) => state.login.loading);
   const loading3 = useSelector((state: RootState) => state.updateUser.loading);
   const loading4 = useSelector(
     (state: RootState) => state.notification.loading
-  );
-
-  const user = useSelector(
-    (state: RootState) => state.userDetails.data as UserDetails
   );
 
   useEffect(() => {
@@ -53,8 +49,6 @@ const AppRoutes: React.FC = () => {
             },
           })
         );
-      } else {
-        navigate("/login");
       }
     };
 
@@ -68,10 +62,14 @@ const AppRoutes: React.FC = () => {
         autoClose={5000}
         hideProgressBar
       />
-
       {(loading1 || loading2 || loading3 || loading4) && <Spinner />}
-      {user?.id && <Sidebar />}
-      {user?.id && <Navbar />}
+
+      {location.pathname !== "/login" && (
+        <>
+          <Sidebar />
+          <Navbar />
+        </>
+      )}
       <div className={`ml-[250px] mt-[80px]`}>
         <Routes>
           <Route
@@ -94,12 +92,14 @@ const AppRoutes: React.FC = () => {
             path="/notifications/sent"
             element={<SentNotifications />}
           />
-          <Route
-            path="/login"
-            element={<Login />}
-          />
         </Routes>
       </div>
+      <Routes>
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+      </Routes>
     </>
   );
 };

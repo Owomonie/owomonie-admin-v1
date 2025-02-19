@@ -4,6 +4,7 @@ import { getUserDetails } from "./get-user-details";
 import { ExtraArgs } from "../../utils/types";
 import { toast } from "react-toastify";
 import { getAllUsers } from "./get-all-users";
+import { jwtDecode } from "jwt-decode";
 
 interface LoginError {
   message: string;
@@ -35,24 +36,28 @@ export const loginUser = createAsyncThunk(
         password,
       });
 
-      if (!data.isAdmin) {
+      const token = data?.data;
+
+      const decodedToken: { isAdmin: boolean } = jwtDecode(token);
+
+      if (!decodedToken.isAdmin) {
         toast.error("Unauthorized");
         dispatch(loginComplete());
         navigate("/login");
         return rejectWithValue({ message: "Unauthorized access" });
       } else {
-        localStorage.setItem("authToken", data?.token);
+        localStorage.setItem("authToken", token);
 
         await dispatch(
           getUserDetails({
-            token: data?.token,
+            token: token,
             extra,
           })
         );
 
         await dispatch(
           getAllUsers({
-            token: data?.token,
+            token: token,
             extra,
           })
         );
