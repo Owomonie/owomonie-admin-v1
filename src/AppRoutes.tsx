@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -22,6 +22,8 @@ const AppRoutes: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [initialLoading, setInitialLoading] = useState(true);
+
   const loading1 = useSelector((state: RootState) => state.userDetails.loading);
   const loading2 = useSelector((state: RootState) => state.login.loading);
   const loading3 = useSelector((state: RootState) => state.updateUser.loading);
@@ -31,29 +33,42 @@ const AppRoutes: React.FC = () => {
 
   useEffect(() => {
     const fetchDetails = async () => {
-      const token = localStorage.getItem("authToken");
-      if (token) {
+      try {
+        const token = localStorage.getItem("authToken");
+
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+
         await dispatch(
           getUserDetails({
             token,
-            extra: {
-              navigate,
-            },
+            extra: { navigate },
           })
         );
+
         await dispatch(
           getAllUsers({
             token,
-            extra: {
-              navigate,
-            },
+            extra: { navigate },
           })
         );
+      } catch (error) {
+        console.error("Error fetching details:", error);
+
+        navigate("/login");
+        return;
+      } finally {
+        setInitialLoading(false);
       }
     };
-
     fetchDetails();
   }, [dispatch, navigate]);
+
+  if (initialLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
