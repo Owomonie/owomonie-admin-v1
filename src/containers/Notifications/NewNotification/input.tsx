@@ -8,7 +8,9 @@ import { Users } from "../../../utils/types";
 interface NewNotificationInputsProps {
   formState: NotificationFormState;
   handleInputChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => void;
   userSelectedID: string;
   setUserSelectedID: React.Dispatch<React.SetStateAction<string>>;
@@ -27,7 +29,9 @@ const NewNotificationInputs = ({
   const sortedUsers = [...users].sort((a, b) => a.email.localeCompare(b.email));
 
   const handleRecipientChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     handleInputChange(event);
     if (formState.recipients !== "one") {
@@ -158,13 +162,12 @@ const NewNotificationInputs = ({
           className="font-[350] text-xs text-[#5F5F5F]">
           MESSAGE <small className="text-red-600 font-bold ml-3">*</small>
         </label>
-        <input
-          type="text"
+        <textarea
           name="message"
           value={formState.message}
           onChange={handleInputChange}
           placeholder="Enter Message Body"
-          className="rounded-md py-2 px-4 bg-[#EAEAEA] text-[#0F0F0F] font-[350] text-[15px]"
+          className="rounded-md py-2 px-4 bg-[#EAEAEA] text-[#0F0F0F] font-[350] text-[15px] min-h-[120px] resize-none"
         />
       </div>
     </div>
