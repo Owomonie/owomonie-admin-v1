@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import TransactionsHeader from "./header";
 import TransactionList from "./transaction-list";
 import { RootState, useAppDispatch } from "../../redux/store";
@@ -6,7 +8,6 @@ import { useSelector } from "react-redux";
 import { Transaction } from "../../utils/types";
 import { formatToDateString } from "../../utils/date";
 import { getAllTransactions } from "../../redux/slice/get-all-transactions";
-import { useNavigate } from "react-router-dom";
 
 const Transactions = () => {
   const currentDate = new Date();
@@ -76,7 +77,14 @@ const Transactions = () => {
         transactionType={transactionType}
         onTransactionTypeChange={setTransactionType}
       />
-      <TransactionList transactions={filteredTransactions} />
+      <TransactionList
+        transactions={filteredTransactions}
+        endDate={endDate}
+        startDate={startDate}
+        searchQuery={searchQuery}
+        transactionType={transactionType}
+        userId={userId}
+      />
     </div>
   );
 };
