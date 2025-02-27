@@ -5,6 +5,7 @@ import { ExtraArgs } from "../../utils/types";
 import { toast } from "react-toastify";
 import { getAllUsers } from "./get-all-users";
 import { jwtDecode } from "jwt-decode";
+import { getAllTransactions } from "./get-all-transactions";
 
 interface LoginError {
   message: string;
@@ -59,6 +60,13 @@ export const loginUser = createAsyncThunk(
           getAllUsers({
             token: token,
             extra,
+          })
+        );
+
+        await dispatch(
+          getAllTransactions({
+            token,
+            extra: { navigate },
           })
         );
 

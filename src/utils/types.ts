@@ -42,3 +42,15 @@ export interface Users {
   lastLogin: string;
   registeredDate: string;
 }
+
+export interface Transaction {
+  id: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  date: string;
+  type: "Debit" | "Credit";
+  amount: number;
+  category: string;
+  bank: string;
+}

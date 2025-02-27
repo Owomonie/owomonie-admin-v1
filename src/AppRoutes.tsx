@@ -16,6 +16,8 @@ import Notifications from "./containers/Notifications";
 import NewNotification from "./containers/Notifications/NewNotification";
 import DraftNotifications from "./containers/Notifications/DraftNotifications";
 import SentNotifications from "./containers/Notifications/SentNotifications";
+import Transactions from "./containers/Transactions";
+import { getAllTransactions } from "./redux/slice/get-all-transactions";
 
 const AppRoutes: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -50,6 +52,13 @@ const AppRoutes: React.FC = () => {
 
         await dispatch(
           getAllUsers({
+            token,
+            extra: { navigate },
+          })
+        );
+
+        await dispatch(
+          getAllTransactions({
             token,
             extra: { navigate },
           })
@@ -106,6 +115,10 @@ const AppRoutes: React.FC = () => {
           <Route
             path="/notifications/sent"
             element={<SentNotifications />}
+          />
+          <Route
+            path="/transactions"
+            element={<Transactions />}
           />
         </Routes>
       </div>

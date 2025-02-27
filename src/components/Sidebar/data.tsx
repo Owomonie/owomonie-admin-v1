@@ -70,7 +70,14 @@ const unfocusedSettingsIcon = new URL(
   import.meta.url
 ).href;
 
-export const SidebarData = [
+export interface SidebarItem {
+  focusedIcon: string;
+  unfocusedIcon: string;
+  title: string;
+  link: string;
+}
+
+export const SidebarData: SidebarItem[] = [
   {
     focusedIcon: focusedUserIcon,
     unfocusedIcon: unfocusedUserIcon,
