@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TransactionsHeader from "./header";
 import TransactionList from "./transaction-list";
-import { RootState } from "../../redux/store";
+import { RootState, useAppDispatch } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { Transaction } from "../../utils/types";
+import { formatToDateString } from "../../utils/date";
+import { getAllTransactions } from "../../redux/slice/get-all-transactions";
+import { useNavigate } from "react-router-dom";
 
 const Transactions = () => {
   const currentDate = new Date();
@@ -17,10 +20,31 @@ const Transactions = () => {
   const [userFullName, setUserFullName] = useState("all");
   const [transactionType, setTransactionType] = useState("all");
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const transactions = useSelector(
     (state: RootState) =>
       state.allTransactions.data.transactions as Transaction[]
   );
+
+  useEffect(() => {
+    const fetchTransactionsByDates = async () => {
+      const token = localStorage.getItem("authToken");
+      if (startDate && endDate && token) {
+        dispatch(
+          getAllTransactions({
+            token,
+            extra: { navigate },
+            startDate: formatToDateString(startDate),
+            endDate: formatToDateString(endDate),
+          })
+        );
+      }
+    };
+
+    fetchTransactionsByDates();
+  }, [startDate, endDate, dispatch, navigate]);
 
   return (
     <div className="px-6 py-4">
