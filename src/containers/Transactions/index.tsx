@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { Transaction } from "../../utils/types";
 import { formatToDateString } from "../../utils/date";
 import { getAllTransactions } from "../../redux/slice/get-all-transactions";
+// import TransactionPagination from "./pagination";
 
 const Transactions = () => {
   const currentDate = new Date();
@@ -28,6 +29,10 @@ const Transactions = () => {
     (state: RootState) =>
       state.allTransactions.data.transactions as Transaction[]
   );
+
+  //   const totalPages = useSelector(
+  //     (state: RootState) => state.allTransactions.data.totalPages
+  //   );
 
   useEffect(() => {
     const fetchTransactionsByDates = async () => {
@@ -77,6 +82,9 @@ const Transactions = () => {
         transactionType={transactionType}
         onTransactionTypeChange={setTransactionType}
       />
+      {/* {totalPages.toString() > "1" && (
+        <TransactionPagination totalPages={parseInt(totalPages)} />
+      )} */}
       <TransactionList
         transactions={filteredTransactions}
         endDate={endDate}
