@@ -13,8 +13,8 @@ const searchIcon = new URL("../../assets/navicons/search.png", import.meta.url)
   .href;
 
 interface TransactionsHeaderProps {
-  userFullName: string;
-  onUserFullNameChange: (name: string) => void;
+  userId: string;
+  onUserIdChange: (name: string) => void;
   transactionType: string;
   onTransactionTypeChange: (type: string) => void;
   searchQuery: string;
@@ -26,8 +26,8 @@ interface TransactionsHeaderProps {
 }
 
 const TransactionsHeader: React.FC<TransactionsHeaderProps> = ({
-  userFullName,
-  onUserFullNameChange,
+  userId,
+  onUserIdChange,
   transactionType,
   onTransactionTypeChange,
   searchQuery,
@@ -128,8 +128,8 @@ const TransactionsHeader: React.FC<TransactionsHeaderProps> = ({
           </div>
           <div className="relative">
             <select
-              id="userName"
-              name="userName"
+              id="transactionType"
+              name="transactionType"
               value={transactionType}
               onChange={(e) => onTransactionTypeChange(e.target.value)}
               className="appearance-none rounded-3xl py-2 pl-4 bg-[#EAEAEA] w-[80px] text-[#0F0F0F] 
@@ -148,8 +148,8 @@ const TransactionsHeader: React.FC<TransactionsHeaderProps> = ({
             <select
               id="userName"
               name="userName"
-              value={userFullName}
-              onChange={(e) => onUserFullNameChange(e.target.value)}
+              value={userId}
+              onChange={(e) => onUserIdChange(e.target.value)}
               className="appearance-none rounded-3xl py-2 pl-4 bg-[#EAEAEA] w-[200px] text-[#0F0F0F] 
               font-[450] text-[12px] border cursor-pointer border-[#D3D3D3] focus:outline-none">
               <option value="all">All Users</option>

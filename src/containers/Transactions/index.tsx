@@ -17,7 +17,7 @@ const Transactions = () => {
   const [startDate, setStartDate] = useState<Date | null>(startDateBegin);
   const [endDate, setEndDate] = useState<Date | null>(endDateBegin);
   const [searchQuery, setSearchQuery] = useState("");
-  const [userFullName, setUserFullName] = useState("all");
+  const [userId, setUserId] = useState("all");
   const [transactionType, setTransactionType] = useState("all");
 
   const dispatch = useAppDispatch();
@@ -46,6 +46,22 @@ const Transactions = () => {
     fetchTransactionsByDates();
   }, [startDate, endDate, dispatch, navigate]);
 
+  const filteredTransactions = transactions.filter((txn) => {
+    const matchesType =
+      transactionType === "all" || transactionType === txn.type;
+
+    const matchesUserId = userId === "all" || userId === txn.userId;
+
+    const matchesSearch =
+      !searchQuery ||
+      txn.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      txn.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      txn.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      txn.bank.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesType && matchesUserId && matchesSearch;
+  });
+
   return (
     <div className="px-6 py-4">
       <TransactionsHeader
@@ -55,12 +71,12 @@ const Transactions = () => {
         setEndDate={setEndDate}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        userFullName={userFullName}
-        onUserFullNameChange={setUserFullName}
+        userId={userId}
+        onUserIdChange={setUserId}
         transactionType={transactionType}
         onTransactionTypeChange={setTransactionType}
       />
-      <TransactionList transactions={transactions} />
+      <TransactionList transactions={filteredTransactions} />
     </div>
   );
 };
