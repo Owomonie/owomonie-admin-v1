@@ -1,5 +1,9 @@
 import { useState } from "react";
 import TransactionsHeader from "./header";
+import TransactionList from "./transaction-list";
+import { RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
+import { Transaction } from "../../utils/types";
 
 const Transactions = () => {
   const currentDate = new Date();
@@ -12,6 +16,11 @@ const Transactions = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [userFullName, setUserFullName] = useState("all");
   const [transactionType, setTransactionType] = useState("all");
+
+  const transactions = useSelector(
+    (state: RootState) =>
+      state.allTransactions.data.transactions as Transaction[]
+  );
 
   return (
     <div className="px-6 py-4">
@@ -27,6 +36,7 @@ const Transactions = () => {
         transactionType={transactionType}
         onTransactionTypeChange={setTransactionType}
       />
+      <TransactionList transactions={transactions} />
     </div>
   );
 };

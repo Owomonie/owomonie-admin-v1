@@ -71,7 +71,7 @@ const UsersList: React.FC<UsersListProps> = ({
       {users.length > 0 ? (
         <>
           <table className="w-full">
-            <thead className="">
+            <thead>
               <tr>
                 <th className="text-left px-4 py-2 font-[350] text-xs text-[#5F5F5F] border-b">
                   USERNAME

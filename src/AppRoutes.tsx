@@ -32,6 +32,9 @@ const AppRoutes: React.FC = () => {
   const loading4 = useSelector(
     (state: RootState) => state.notification.loading
   );
+  const loading5 = useSelector(
+    (state: RootState) => state.allTransactions.loading
+  );
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -86,7 +89,9 @@ const AppRoutes: React.FC = () => {
         autoClose={5000}
         hideProgressBar
       />
-      {(loading1 || loading2 || loading3 || loading4) && <Spinner />}
+      {(loading1 || loading2 || loading3 || loading4 || loading5) && (
+        <Spinner />
+      )}
 
       {location.pathname !== "/login" && (
         <>
