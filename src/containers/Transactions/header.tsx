@@ -4,10 +4,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { RootState } from "../../redux/store";
-import { Users } from "../../utils/types";
+import { Transaction, Users } from "../../utils/types";
 import { useState } from "react";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { MdOutlineClose } from "react-icons/md";
+import { formatDate } from "../../utils/date";
 
 const searchIcon = new URL("../../assets/navicons/search.png", import.meta.url)
   .href;
@@ -23,6 +24,7 @@ interface TransactionsHeaderProps {
   setStartDate: (date: Date | null) => void;
   endDate: Date | null;
   setEndDate: (date: Date | null) => void;
+  transactions: Transaction[];
 }
 
 const TransactionsHeader: React.FC<TransactionsHeaderProps> = ({
@@ -36,6 +38,7 @@ const TransactionsHeader: React.FC<TransactionsHeaderProps> = ({
   setStartDate,
   endDate,
   setEndDate,
+  transactions,
 }) => {
   const users = useSelector(
     (state: RootState) => state.allUsers.data as Users[]
@@ -44,6 +47,9 @@ const TransactionsHeader: React.FC<TransactionsHeaderProps> = ({
   const sortedUsers = [...users].sort((a, b) =>
     a.firstName.localeCompare(b.firstName)
   );
+
+  const user = users.find((user) => user.id === userId);
+  const userName = user ? `${user.firstName} ${user.lastName}` : "User";
 
   const currentDate = new Date();
 
@@ -71,6 +77,62 @@ const TransactionsHeader: React.FC<TransactionsHeaderProps> = ({
           day: "numeric",
         })}`
       : "Select Date Range";
+
+  const convertToCSV = (data: Transaction[]) => {
+    const headers = [
+      "First Name",
+      "Last Name",
+      "Category",
+      "Bank",
+      "Type",
+      "Amount",
+      "Date",
+    ];
+
+    const escapeCSVValue = (value: string) => {
+      if (value && value.includes(",")) {
+        return `"${value.replace(/"/g, '""')}"`;
+      }
+      return value;
+    };
+
+    const rows = data.map((txn) => [
+      escapeCSVValue(txn.firstName),
+      escapeCSVValue(txn.lastName),
+      escapeCSVValue(txn.category),
+      escapeCSVValue(txn.bank),
+      escapeCSVValue(txn.type),
+      escapeCSVValue(txn.amount.toString()),
+      escapeCSVValue(formatDate(txn.date)),
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.join(",")),
+    ].join("\n");
+
+    return csvContent;
+  };
+
+  // Trigger download of CSV
+  const downloadCSV = () => {
+    const csvData = convertToCSV(transactions);
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    if (link.download !== undefined) {
+      // Support for HTML5 download attribute
+      const filename =
+        userId === "all"
+          ? `All Users Transactions (${formattedDateRange})`
+          : `${userName} (${formattedDateRange})`;
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -184,9 +246,13 @@ const TransactionsHeader: React.FC<TransactionsHeaderProps> = ({
             className="w-5 h-5 absolute top-2 right-5"
           />
         </div>
-        <button className="bg-[#1F79B0] py-2 px-8 rounded-3xl font-[550] text-[15px] text-[#FCFCFC]">
-          Export to CSV
-        </button>
+        {transactions.length > 0 && (
+          <button
+            onClick={downloadCSV}
+            className="bg-[#1F79B0] py-2 px-8 rounded-3xl font-[550] text-[15px] text-[#FCFCFC]">
+            Export to CSV
+          </button>
+        )}
       </div>
     </div>
   );

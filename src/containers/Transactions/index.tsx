@@ -101,6 +101,7 @@ const Transactions = () => {
         onUserIdChange={setUserId}
         transactionType={transactionType}
         onTransactionTypeChange={setTransactionType}
+        transactions={filteredTransactions}
       />
       {totalPages.toString() > "1" && filteredTransactions.length > 0 && (
         <TransactionPagination
