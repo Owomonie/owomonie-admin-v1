@@ -123,8 +123,8 @@ const TransactionsHeader: React.FC<TransactionsHeaderProps> = ({
       // Support for HTML5 download attribute
       const filename =
         userId === "all"
-          ? `All Users Transactions (${formattedDateRange})`
-          : `${userName} (${formattedDateRange})`;
+          ? `${transactionType} Users Transactions (${formattedDateRange})`
+          : `${userName} ${transactionType} Transactions (${formattedDateRange})`;
       const url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
       link.setAttribute("download", filename);
