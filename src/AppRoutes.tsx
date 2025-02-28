@@ -46,29 +46,13 @@ const AppRoutes: React.FC = () => {
           return;
         }
 
-        await dispatch(
-          getUserDetails({
-            token,
-            extra: { navigate },
-          })
-        );
-
-        await dispatch(
-          getAllUsers({
-            token,
-            extra: { navigate },
-          })
-        );
-
-        await dispatch(
-          getAllTransactions({
-            token,
-            extra: { navigate },
-          })
-        );
+        await Promise.all([
+          dispatch(getUserDetails({ token, extra: { navigate } })),
+          dispatch(getAllUsers({ token, extra: { navigate } })),
+          dispatch(getAllTransactions({ token, extra: { navigate } })),
+        ]);
       } catch (error) {
         console.error("Error fetching details:", error);
-
         navigate("/login");
         return;
       } finally {
