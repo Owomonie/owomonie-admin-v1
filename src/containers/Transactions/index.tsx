@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import TransactionsHeader from "./header";
@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { Transaction } from "../../utils/types";
 import { formatToDateString } from "../../utils/date";
 import { getAllTransactions } from "../../redux/slice/get-all-transactions";
-// import TransactionPagination from "./pagination";
+import TransactionPagination from "./pagination";
 
 const Transactions = () => {
   const currentDate = new Date();
@@ -21,6 +21,7 @@ const Transactions = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState("all");
   const [transactionType, setTransactionType] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -30,15 +31,32 @@ const Transactions = () => {
       state.allTransactions.data.transactions as Transaction[]
   );
 
-  //   const totalPages = useSelector(
-  //     (state: RootState) => state.allTransactions.data.totalPages
-  //   );
+  const totalPages = useSelector(
+    (state: RootState) => state.allTransactions.data.totalPages
+  );
+
+  const handlePageChange = async (page: number) => {
+    const token = localStorage.getItem("authToken");
+    if (startDate && endDate && token) {
+      setCurrentPage(page);
+
+      await dispatch(
+        getAllTransactions({
+          token,
+          page,
+          extra: { navigate },
+          startDate: formatToDateString(startDate),
+          endDate: formatToDateString(endDate),
+        })
+      );
+    }
+  };
 
   useEffect(() => {
     const fetchTransactionsByDates = async () => {
       const token = localStorage.getItem("authToken");
       if (startDate && endDate && token) {
-        dispatch(
+        await dispatch(
           getAllTransactions({
             token,
             extra: { navigate },
@@ -52,21 +70,23 @@ const Transactions = () => {
     fetchTransactionsByDates();
   }, [startDate, endDate, dispatch, navigate]);
 
-  const filteredTransactions = transactions.filter((txn) => {
-    const matchesType =
-      transactionType === "all" || transactionType === txn.type;
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter((txn) => {
+      const matchesType =
+        transactionType === "all" || transactionType === txn.type;
 
-    const matchesUserId = userId === "all" || userId === txn.userId;
+      const matchesUserId = userId === "all" || userId === txn.userId;
 
-    const matchesSearch =
-      !searchQuery ||
-      txn.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      txn.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      txn.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      txn.bank.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch =
+        !searchQuery ||
+        txn.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        txn.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        txn.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        txn.bank.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return matchesType && matchesUserId && matchesSearch;
-  });
+      return matchesType && matchesUserId && matchesSearch;
+    });
+  }, [transactions, transactionType, userId, searchQuery]);
 
   return (
     <div className="px-6 py-4">
@@ -82,9 +102,13 @@ const Transactions = () => {
         transactionType={transactionType}
         onTransactionTypeChange={setTransactionType}
       />
-      {/* {totalPages.toString() > "1" && (
-        <TransactionPagination totalPages={parseInt(totalPages)} />
-      )} */}
+      {totalPages.toString() > "1" && (
+        <TransactionPagination
+          totalPages={parseInt(totalPages)}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+      )}
       <TransactionList
         transactions={filteredTransactions}
         endDate={endDate}
