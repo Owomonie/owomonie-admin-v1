@@ -44,7 +44,7 @@ const TransactionPagination: React.FC<TransactionPaginationProps> = ({
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className="flex  justify-between px-5 items-center gap-2 mt-4">
+    <div className="flex  justify-between px-5 items-center gap-5 mt-4">
       {/* Previous Button */}
       <div
         onClick={handlePreviousPage}
