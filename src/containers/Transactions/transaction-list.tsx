@@ -45,7 +45,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
         return `No ${transactionType} transactions found between ${
           startDate && formatDate(startDate.toDateString())
         } and ${endDate && formatDate(endDate.toDateString())} ${
-          userId !== "all" && `for ${userName}`
+          userId !== "all" ? `for ${userName}` : ""
         }`;
       }
 

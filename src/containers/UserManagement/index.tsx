@@ -3,7 +3,7 @@ import { RootState } from "../../redux/store";
 import { Users } from "../../utils/types";
 import UserManagementHeader from "./header";
 import UsersList from "./users-list";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const UserManagement = () => {
   const [selectedFilterStatus, setSelectedFilterStatus] = useState("all");
@@ -17,21 +17,23 @@ const UserManagement = () => {
     a.userName.localeCompare(b.userName)
   );
 
-  const filteredUsers = sortedUsers.filter((user) => {
-    const matchesStatus =
-      selectedFilterStatus === "all" ||
-      (selectedFilterStatus === "active" && user.status === 1) ||
-      (selectedFilterStatus === "suspended" && user.status === -1);
+  const filteredUsers = useMemo(() => {
+    return sortedUsers.filter((user) => {
+      const matchesStatus =
+        selectedFilterStatus === "all" ||
+        (selectedFilterStatus === "active" && user.status === 1) ||
+        (selectedFilterStatus === "suspended" && user.status === -1);
 
-    const matchesSearch =
-      !searchQuery ||
-      user.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.lastName.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch =
+        !searchQuery ||
+        user.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return matchesStatus && matchesSearch;
-  });
+      return matchesStatus && matchesSearch;
+    });
+  }, [sortedUsers, selectedFilterStatus, searchQuery]);
 
   return (
     <div className="px-6 py-4">

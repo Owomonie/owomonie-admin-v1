@@ -102,7 +102,7 @@ const Transactions = () => {
         transactionType={transactionType}
         onTransactionTypeChange={setTransactionType}
       />
-      {totalPages.toString() > "1" && (
+      {totalPages.toString() > "1" && filteredTransactions.length > 0 && (
         <TransactionPagination
           totalPages={parseInt(totalPages)}
           currentPage={currentPage}
